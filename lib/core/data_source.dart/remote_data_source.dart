@@ -3,14 +3,9 @@ import 'package:dio/dio.dart';
 import 'package:dartz/dartz.dart';
 
 class RemoteDataSource implements DataSourceInterface {
-  late final Dio _dio;
+  final Dio _dio;
 
-  RemoteDataSource._() {
-    _dio = Dio();
-  }
-
-  static RemoteDataSource get instance => RemoteDataSource._();
-
+  RemoteDataSource(this._dio);
 
   @override
   Future<Either<List<Map<String, dynamic>>, String>> getList(String url, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
@@ -19,7 +14,7 @@ class RemoteDataSource implements DataSourceInterface {
       if (response.statusCode == 200 && response.data is List<dynamic>) {
         return Left(response.data.map((e) => e as Map<String, dynamic>).toList());
       } else {
-        return Right(response.statusCode.toString() + ' ' + response.data['message'].toString().substring(0, 20));
+        return Right(_errorMessage(response));
       }
     } catch (e) {
       return Right('unknown error');
@@ -33,7 +28,7 @@ class RemoteDataSource implements DataSourceInterface {
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Left(response.statusCode.toString() + ' ' + response.data['message'].toString().substring(0, 20));
+        return Right(_errorMessage(response));
       }
     } catch (e) {  
       return Right('unknown error');
@@ -47,7 +42,7 @@ class RemoteDataSource implements DataSourceInterface {
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Left(response.statusCode.toString() + ' ' + response.data['message'].toString().substring(0, 20));
+        return Right(_errorMessage(response));
       }
     } catch (e) {
       return Right('unknown error');
@@ -61,7 +56,7 @@ class RemoteDataSource implements DataSourceInterface {
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Left(response.statusCode.toString() + ' ' + response.data['message'].toString().substring(0, 20));
+        return Right(_errorMessage(response));
       }
     } catch (e) {
       return Right('unknown error');
@@ -75,10 +70,17 @@ class RemoteDataSource implements DataSourceInterface {
       if (response.statusCode == 200) {
         return Left(true);
       } else {
-        return Left(response.statusCode.toString() + ' ' + response.data['message'].toString().substring(0, 20));
+        return Right(_errorMessage(response));
       }
     } catch (e) {
       return Right('unknown error');
     }
+  }
+
+  String _errorMessage(Response<dynamic> response) {
+    final data = response.data;
+    final message = data is Map ? data['message']?.toString() ?? '' : '';
+    final preview = message.length > 20 ? message.substring(0, 20) : message;
+    return '${response.statusCode ?? ''} $preview'.trim();
   }
 }

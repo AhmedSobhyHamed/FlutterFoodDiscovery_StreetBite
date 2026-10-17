@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutterfooddiscovery_streetbite/features/splah/presentation/screens/splash.dart';
-import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/local_data_source.dart';
+import 'package:flutterfooddiscovery_streetbite/core/di/injection.dart';
+import 'package:flutterfooddiscovery_streetbite/features/main_controller/presentation/screens/main.dart';
 
-void main() {
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  await setupDependencies();
   runApp(const MyApp());
 }
 
@@ -12,13 +14,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      home: SplashScreen(),
-      theme: getTheme(),
+      home: const MainScreen(),
+      theme: getIt<ThemeData>(),
     );
-  }
-
-  Future<ThemeData> getTheme() async {
-    return await AppTheme.getcurrentTheme(LocalDataSource.instance);
   }
 }
 // anime

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:flutterstatemanagement_miniproject/core/themes/app_colors.dart';
+import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/data_source_interface.dart';
+import 'package:flutterfooddiscovery_streetbite/core/themes/app_colors.dart';
 
 abstract final class AppTheme {
   static ThemeData get light {
@@ -54,32 +55,33 @@ abstract final class AppTheme {
     );
   }
 
-  static Future<ThemeData> getcurrentTheme (DataSourceInterface dataSource = LocalDataSource.instance) async {
+  static Future<ThemeData> getcurrentTheme(
+    DataSourceInterface dataSource,
+  ) async {
     final theme = await dataSource.getEntity('theme', 'current');
-    return theme.fold((l) {
-      if (l['light'] == true) {
-        return ThemeData.light;
-      } else {
-        return ThemeData.dark;
+    return theme.fold((saved) {
+      if (saved['light'] == true) {
+        return light;
       }
-    }, (r) {
-      return ThemeData.dark;
-    });
+      return dark;
+    }, (error) => dark);
   }
 
-  static Future<void> setCurrentTheme(ThemeData theme, DataSourceInterface dataSource = LocalDataSource.instance) async {
+  static Future<void> setCurrentTheme(
+    ThemeData theme,
+    DataSourceInterface dataSource,
+  ) async {
     final currentTheme = await dataSource.getEntity('theme', 'current');
-    currentTheme.fold((l) {
-      await dataSource.put('theme', 'current', {
-        'light': theme.brightness.name == Brightness.light.name,
-        'dark': theme.brightness.name == Brightness.dark.name,
-      });
-    }, (r) {
-      await dataSource.post('theme', {
+    final payload = <String, dynamic>{
+      'light': theme.brightness == Brightness.light,
+      'dark': theme.brightness == Brightness.dark,
+    };
+    await currentTheme.fold(
+      (saved) => dataSource.put('theme', 'current', payload),
+      (error) => dataSource.post('theme', {
         'id': 'current',
-        'light': theme.brightness.name == Brightness.light.name,
-        'dark': theme.brightness.name == Brightness.dark.name,
-      });
-    });
+        ...payload,
+      }),
+    );
   }
 }
