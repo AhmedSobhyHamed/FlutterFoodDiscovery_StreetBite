@@ -1,0 +1,16 @@
+{
+    "login_title": "Food and groceries delivered to you",
+    "login_description": "Enter your email and password to get started",
+    "email_required": "Email is required",
+    "email_invalid": "Email is invalid",
+    "password_required": "Password is required",
+    "password_length": "Password must be at least 8 characters long",
+    "password_chars_numbers": "Password must contain at least one number",
+    "dont_have_an_account": "Don't have an account?",
+    "signup": "Sign up",
+    "forgot_password": "Forgot password?",
+    "login": "Login",
+    "continue": "Continue",
+    "email_hint": "Email",
+    "password_hint": "Password"
+}

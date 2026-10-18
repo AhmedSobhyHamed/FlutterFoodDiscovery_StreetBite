@@ -1,0 +1,16 @@
+{
+    "login_title": "أطعمة ومواد غذائية منزلية مقدمة لك",
+    "login_description": "أدخل بريدك الإلكتروني وكلمة المرور للبدء", 
+    "email_required": "بريدك الإلكتروني مطلوب",
+    "email_invalid": "بريدك الإلكتروني غير صالح",
+    "password_required": "كلمة المرور مطلوبة",
+    "password_length": "كلمة المرور يجب أن تكون على الأقل 8 أحرف",
+    "password_chars_numbers": "كلمة المرور يجب أن تحتوي على على الأقل على عدد",
+    "dont_have_an_account": "ليس لديك حساب؟",
+    "signup": "تسجيل",
+    "forgot_password": "هل نسيت كلمة المرور؟",
+    "login": "تسجيل الدخول",
+    "continue": "متابعة",
+    "email_hint": "البريد الإلكتروني",
+    "password_hint": "كلمة المرور"
+}

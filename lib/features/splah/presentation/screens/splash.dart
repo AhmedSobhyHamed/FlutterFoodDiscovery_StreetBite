@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:flutterfooddiscovery_streetbite/core/general/appconfig.dart';
+import 'package:flutterfooddiscovery_streetbite/core/themes/app_colors.dart';
 import 'package:flutterfooddiscovery_streetbite/features/splah/presentation/blocs/splash_bloc.dart';
 import 'package:flutterfooddiscovery_streetbite/features/splah/presentation/blocs/splash_events.dart';
 
@@ -26,7 +27,7 @@ class _SplashScreenState extends State<SplashScreen>
 
     _animationController = AnimationController(
       vsync: this,
-      duration: const Duration(milliseconds: 1500),
+      duration: const Duration(milliseconds: 2000),
     );
     _fadeAnimation = Tween<double>(begin: 0, end: 1).animate(
       CurvedAnimation(
@@ -65,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen>
             const SizedBox(height: 20),
             Text(
               AppConfig.appName,
-              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold),
+              style: const TextStyle(fontSize: 24, fontWeight: FontWeight.bold, color: AppColors.yellow),
             ), // Text
           ], // children
         ), // Column
