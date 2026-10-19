@@ -81,5 +81,14 @@
     "profile_verify_sent": "Verification email sent",
     "profile_locked": "Fingerprint is required to open profile",
     "profile_fingerprint_reason": "Confirm your fingerprint to open your profile",
-    "profile_retry": "Retry"
+    "profile_retry": "Retry",
+    "settings": "Settings",
+    "settings_fingerprint_reason": "Confirm your fingerprint to open settings",
+    "settings_locked": "Fingerprint is required to open settings",
+    "settings_language": "Language",
+    "settings_theme": "Theme",
+    "settings_light": "Light",
+    "settings_dark": "Dark",
+    "settings_english": "English",
+    "settings_arabic": "Arabic"
 }

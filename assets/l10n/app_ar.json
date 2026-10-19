@@ -81,5 +81,14 @@
     "profile_verify_sent": "تم إرسال رسالة التحقق",
     "profile_locked": "بصمة الإصبع مطلوبة لفتح الملف",
     "profile_fingerprint_reason": "أكد بصمة إصبعك لفتح الملف",
-    "profile_retry": "إعادة المحاولة"
+    "profile_retry": "إعادة المحاولة",
+    "settings": "الإعدادات",
+    "settings_fingerprint_reason": "أكد بصمة إصبعك لفتح الإعدادات",
+    "settings_locked": "بصمة الإصبع مطلوبة لفتح الإعدادات",
+    "settings_language": "اللغة",
+    "settings_theme": "المظهر",
+    "settings_light": "فاتح",
+    "settings_dark": "داكن",
+    "settings_english": "English",
+    "settings_arabic": "العربية"
 }

@@ -50,12 +50,17 @@ class _MyAppState extends State<MyApp> {
         BlocProvider(create: (_) => getIt<CartCubit>()..load()),
         BlocProvider(create: (_) => getIt<FavCubit>()..load()),
       ],
-      child: MaterialApp(
-        locale: _localization.currentLocale,
-        supportedLocales: _localization.supportedLocales,
-        localizationsDelegates: _localization.localizationsDelegates,
-        home: const MainScreen(),
-        theme: getIt<ThemeData>(),
+      child: ListenableBuilder(
+        listenable: getIt<ValueNotifier<ThemeData>>(),
+        builder: (context, _) {
+          return MaterialApp(
+            locale: _localization.currentLocale,
+            supportedLocales: _localization.supportedLocales,
+            localizationsDelegates: _localization.localizationsDelegates,
+            home: const MainScreen(),
+            theme: getIt<ValueNotifier<ThemeData>>().value,
+          );
+        },
       ),
     );
   } // build

@@ -7,6 +7,8 @@ import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/ge
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/login_withemail_password_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/signup_minimal_info_usecase.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/verify_email_usecase.dart';
+import 'package:flutterfooddiscovery_streetbite/features/settings/domain/repositories/profile_repository_interface.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/current_user_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/login_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/signout_cubit.dart';
@@ -26,13 +28,22 @@ void setupAuthDependencies() {
   );
 
   getIt.registerFactory<LoginWithEmailPasswordUsecase>(
-    () => LoginWithEmailPasswordUsecase(getIt<AuthRepositoryInterface>()),
+    () => LoginWithEmailPasswordUsecase(
+      getIt<AuthRepositoryInterface>(),
+      getIt<ProfileRepositoryInterface>(),
+    ),
   );
   getIt.registerFactory<SignupMinimalInfoUsecase>(
-    () => SignupMinimalInfoUsecase(getIt<AuthRepositoryInterface>()),
+    () => SignupMinimalInfoUsecase(
+      getIt<AuthRepositoryInterface>(),
+      getIt<ProfileRepositoryInterface>(),
+    ),
   );
   getIt.registerFactory<SignOutUsecase>(
     () => SignOutUsecase(getIt<AuthRepositoryInterface>()),
+  );
+  getIt.registerFactory<VerifyEmailUsecase>(
+    () => VerifyEmailUsecase(getIt<AuthRepositoryInterface>()),
   );
   getIt.registerFactory<GetCurrentUserUsecase>(
     () => GetCurrentUserUsecase(getIt<AuthRepositoryInterface>()),
