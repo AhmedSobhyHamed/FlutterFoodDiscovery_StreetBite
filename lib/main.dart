@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfooddiscovery_streetbite/core/di/injection.dart';
+import 'package:flutterfooddiscovery_streetbite/features/cart/presentation/blocs/cart_cubit.dart';
+import 'package:flutterfooddiscovery_streetbite/features/fav/presentation/blocs/fav_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/main_controller/presentation/screens/main.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -42,12 +45,18 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      locale: _localization.currentLocale,
-      supportedLocales: _localization.supportedLocales,
-      localizationsDelegates: _localization.localizationsDelegates,
-      home: const MainScreen(),
-      theme: getIt<ThemeData>(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(create: (_) => getIt<CartCubit>()..load()),
+        BlocProvider(create: (_) => getIt<FavCubit>()..load()),
+      ],
+      child: MaterialApp(
+        locale: _localization.currentLocale,
+        supportedLocales: _localization.supportedLocales,
+        localizationsDelegates: _localization.localizationsDelegates,
+        home: const MainScreen(),
+        theme: getIt<ThemeData>(),
+      ),
     );
   } // build
 } // _MyAppState

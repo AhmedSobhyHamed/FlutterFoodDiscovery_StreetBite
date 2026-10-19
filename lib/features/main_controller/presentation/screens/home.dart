@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutterfooddiscovery_streetbite/core/themes/app_colors.dart';
+import 'package:flutterfooddiscovery_streetbite/features/cart/presentation/screens/cart_page.dart';
+import 'package:flutterfooddiscovery_streetbite/features/fav/presentation/screens/fav_page.dart';
 import 'package:flutterfooddiscovery_streetbite/features/main_controller/l10n/main_controller_locale.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/presentation/screens/home_page.dart';
 
@@ -22,8 +24,8 @@ class _HomeScreenState extends State<HomeScreen> {
         index: _index,
         children: const [
           HomePage(),
-          FavoritesScreen(),
-          CartScreen(),
+          FavPage(),
+          CartPage(),
         ],
       ),
       bottomNavigationBar: NavigationBar(
@@ -36,40 +38,19 @@ class _HomeScreenState extends State<HomeScreen> {
             icon: const Icon(Icons.home_outlined, color: AppColors.grayDark),
             selectedIcon: const Icon(Icons.home, color: AppColors.green),
             label: MainControllerLocale.home.getString(context),
-          ), // NavigationDestination
+          ),
           NavigationDestination(
             icon: const Icon(Icons.favorite_outlined, color: AppColors.grayDark),
             selectedIcon: const Icon(Icons.favorite, color: AppColors.green),
             label: MainControllerLocale.favorites.getString(context),
-          ), // NavigationDestination
+          ),
           NavigationDestination(
             icon: const Icon(Icons.shopping_cart_outlined, color: AppColors.grayDark),
             selectedIcon: const Icon(Icons.shopping_cart, color: AppColors.green),
             label: MainControllerLocale.cart.getString(context),
-          ), // NavigationDestination
-        ], // destinations
-      ), // NavigationBar
-    ); // Scaffold
-  } // build
-} // HomeScreen
-
-
-class FavoritesScreen extends StatelessWidget {
-  const FavoritesScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(
-      body: Center(child: Text('Favorites')),
-    ); // Scaffold
-  } // build
-} // FavoritesScreen
-
-class CartScreen extends StatelessWidget {
-  const CartScreen({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Scaffold(body: Center(child: Text('Cart')));
-  } // build
-} // CartScreen
+          ),
+        ],
+      ),
+    );
+  }
+}

@@ -4,6 +4,8 @@ import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/local_data
 import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/remote_data_source.dart';
 import 'package:flutterfooddiscovery_streetbite/core/themes/app_theme.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/di/injection.dart' as auth_di;
+import 'package:flutterfooddiscovery_streetbite/features/cart/di/injection.dart' as cart_di;
+import 'package:flutterfooddiscovery_streetbite/features/fav/di/injection.dart' as fav_di;
 import 'package:flutterfooddiscovery_streetbite/features/meals/di/injection.dart' as meals_di;
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
@@ -17,6 +19,8 @@ Future<void> setupDependencies() async {
   await _setupTheme();
   auth_di.setupAuthDependencies();
   await meals_di.setupMealsDependencies();
+  await cart_di.setupCartDependencies();
+  await fav_di.setupFavDependencies();
 }
 
 // ===============================

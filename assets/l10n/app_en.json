@@ -56,5 +56,15 @@
     "meals_category_required": "Category is required",
     "home": "Home",
     "favorites": "Favorites",
-    "cart": "Cart"
+    "cart": "Cart",
+    "cart_empty": "Your cart is empty",
+    "cart_load_failed": "Could not load the cart",
+    "cart_save_failed": "Could not update the cart",
+    "cart_add": "Add to cart",
+    "cart_retry": "Retry",
+    "fav_empty": "No favorites yet",
+    "fav_load_failed": "Could not load favorites",
+    "fav_save_failed": "Could not update favorites",
+    "fav_add_to_cart": "Add to cart",
+    "fav_retry": "Retry"
 }
