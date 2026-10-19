@@ -16,7 +16,20 @@ class CartPage extends StatelessWidget {
     return Scaffold(
       backgroundColor: AppColors.white,
       body: SafeArea(
-        child: BlocBuilder<CartCubit, cartStatus>(
+        child: BlocConsumer<CartCubit, cartStatus>(
+          listenWhen: (previous, current) {
+            final hadItems = previous is cartStatusLoaded && previous.items.isNotEmpty;
+            final isEmpty = current is cartStatusLoaded && current.items.isEmpty;
+            return hadItems && isEmpty;
+          },
+          listener: (context, state) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(
+                behavior: SnackBarBehavior.floating,
+                content: Text(CartLocale.empty.getString(context)),
+              ),
+            );
+          },
           builder: (context, state) {
             if (state is cartStatusError) {
               return _Message(
@@ -70,7 +83,7 @@ class CartPage extends StatelessWidget {
               ], // ListView
             ); // ListView
           }, // builder
-        ), // BlocBuilder
+        ), // BlocConsumer
       ), // SafeArea
     ); // Scaffold
   } // build

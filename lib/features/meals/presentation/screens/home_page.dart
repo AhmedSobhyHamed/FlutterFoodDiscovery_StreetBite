@@ -81,6 +81,8 @@ class _HomeViewState extends State<_HomeView> {
                     .toList();
             return RefreshIndicator(
               color: AppColors.green,
+              triggerMode: RefreshIndicatorTriggerMode.anywhere,
+              notificationPredicate: (notification) => notification.metrics.axis == Axis.vertical,
               onRefresh: () => context.read<HomeCubit>().refresh(),
               child: ListView(
                 physics: const AlwaysScrollableScrollPhysics(),
