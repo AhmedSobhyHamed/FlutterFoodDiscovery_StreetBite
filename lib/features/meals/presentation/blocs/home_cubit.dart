@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/entities/category_entite.dart';
+import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/clear_home_cache_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_categories_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_hot_offers_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_meals_by_category_usecase.dart';
@@ -14,6 +15,7 @@ class HomeCubit extends Cubit<homeStatus> {
     this._getOffers,
     this._getSelectedCategory,
     this._saveSelectedCategory,
+    this._clearHome,
   ) : super(const homeStatusIdle());
 
   final GetCategoriesUsecase _getCategories;
@@ -21,15 +23,54 @@ class HomeCubit extends Cubit<homeStatus> {
   final GetHotOffersUsecase _getOffers;
   final GetSelectedCategoryUsecase _getSelectedCategory;
   final SaveSelectedCategoryUsecase _saveSelectedCategory;
+  final ClearHomeCacheUsecase _clearHome;
   var _mealsRequest = 0;
 
   Future<void> load() async {
     emit(const homeStatusLoading());
+    await _loadHome();
+  }
+
+  Future<void> refresh() async {
+    final current = state;
+    if (current is! homeStatusLoaded) {
+      await load();
+      return;
+    }
+    final cleared = await _clearHome.call(const ClearHomeCacheParams());
+    if (isClosed) return;
+    final clearError = cleared.fold<String?>((_) => null, (error) => error.message);
+    if (clearError != null) {
+      emit(
+        homeStatusLoaded(
+          categories: current.categories,
+          selectedCategory: current.selectedCategory,
+          meals: current.meals,
+          offers: current.offers,
+          mealsMessage: clearError,
+          offersMessage: current.offersMessage,
+        ),
+      );
+      return;
+    }
+    emit(
+      homeStatusLoaded(
+        categories: current.categories,
+        selectedCategory: current.selectedCategory,
+        meals: const [],
+        offers: const [],
+        mealsLoading: true,
+      ),
+    );
+    await _loadHome(previous: current);
+  }
+
+  Future<void> _loadHome({homeStatusLoaded? previous}) async {
     final categoriesResult = await _getCategories.call(const GetCategoriesParams());
     if (isClosed) return;
     await categoriesResult.fold((categories) async {
       if (categories.isEmpty) {
-        emit(const homeStatusError(message: MealsLocale.categoriesFailed));
+        _emitHomeFailure(MealsLocale.categoriesFailed, previous);
         return;
       }
       final selected = await _resolveSelected(categories);
@@ -49,8 +90,25 @@ class HomeCubit extends Cubit<homeStatus> {
         _loadOffers(),
       ]);
     }, (error) async {
-      emit(homeStatusError(message: error.message));
+      _emitHomeFailure(error.message, previous);
     });
+  }
+
+  void _emitHomeFailure(String message, homeStatusLoaded? previous) {
+    if (previous == null) {
+      emit(homeStatusError(message: message));
+      return;
+    }
+    emit(
+      homeStatusLoaded(
+        categories: previous.categories,
+        selectedCategory: previous.selectedCategory,
+        meals: previous.meals,
+        offers: previous.offers,
+        mealsMessage: message,
+        offersMessage: previous.offersMessage,
+      ),
+    );
   }
 
   Future<void> selectCategory(CategoryEntity category) async {

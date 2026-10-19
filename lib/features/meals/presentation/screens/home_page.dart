@@ -65,11 +65,11 @@ class _HomeViewState extends State<_HomeView> {
                     TextButton(
                       onPressed: () => context.read<HomeCubit>().load(),
                       child: Text(MealsLocale.retry.getString(context)),
-                    ),
-                  ],
-                ),
-              );
-            }
+                    ), // TextButton
+                  ], // children
+                ), // Column
+              ); // Center
+            } // homeStatusError
             if (state is! homeStatusLoaded) {
               return const Center(child: CircularProgressIndicator(color: AppColors.green));
             }
@@ -79,9 +79,13 @@ class _HomeViewState extends State<_HomeView> {
                 : state.meals
                     .where((meal) => meal.name.toLowerCase().contains(query))
                     .toList();
-            return ListView(
-              padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
-              children: [
+            return RefreshIndicator(
+              color: AppColors.green,
+              onRefresh: () => context.read<HomeCubit>().refresh(),
+              child: ListView(
+                physics: const AlwaysScrollableScrollPhysics(),
+                padding: const EdgeInsets.fromLTRB(20, 12, 20, 24),
+                children: [
                 Row(
                   children: [
                     const Icon(Icons.location_on, color: AppColors.green),
@@ -99,8 +103,8 @@ class _HomeViewState extends State<_HomeView> {
                     const Icon(Icons.notifications_none, color: AppColors.black),
                     const SizedBox(width: 12),
                     const Icon(Icons.shopping_cart_outlined, color: AppColors.black),
-                  ],
-                ),
+                  ], // children
+                ), // Row
                 const SizedBox(height: 16),
                 TextField(
                   controller: _searchController,
@@ -116,34 +120,35 @@ class _HomeViewState extends State<_HomeView> {
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(28),
                       borderSide: BorderSide.none,
-                    ),
-                  ),
-                ),
+                    ), // OutlineInputBorder
+                  ), // InputDecoration
+                ), // TextField
                 const SizedBox(height: 20),
                 // category then meals then hot offers
                 CategoryPart(
                   categories: state.categories,
                   selectedCategory: state.selectedCategory,
                   onSelected: context.read<HomeCubit>().selectCategory,
-                ),
+                ), // CategoryPart
                 const SizedBox(height: 20),
                 OffersPart(
                   offers: state.offers,
                   message: state.offersMessage,
                   onMealTap: _openMeal,
-                ),
+                ), // OffersPart
                 MealsPart(
                   meals: meals,
                   loading: state.mealsLoading,
                   message: state.mealsMessage,
                   onMealTap: _openMeal,
-                ),
+                ), // MealsPart
                 const SizedBox(height: 28),
-              ],
-            );
-          },
-        ),
-      ),
-    );
-  }
-}
+                ],
+              ), // ListView
+            ); // RefreshIndicator
+          }, // builder
+        ), // BlocBuilder
+      ), // SafeArea
+    ); // Scaffold
+  } // build
+} // _HomeView

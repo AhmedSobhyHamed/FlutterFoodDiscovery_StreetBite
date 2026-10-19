@@ -14,4 +14,6 @@ abstract interface class MealsRepositoryInterface {
   Future<String?> getSelectedCategory();
 
   Future<void> saveSelectedCategory(String category);
+
+  Future<Either<bool, String>> clearHome();
 }

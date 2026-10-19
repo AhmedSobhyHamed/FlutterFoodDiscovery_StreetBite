@@ -86,6 +86,18 @@ class MealsRepository implements MealsRepositoryInterface {
     } catch (_) {}
   }
 
+  @override
+  Future<Either<bool, String>> clearHome() async {
+    try {
+      await _local.clearHome();
+      return const Left(true);
+    } on AppException catch (error) {
+      return Right(error.message);
+    } catch (_) {
+      return const Right(MealsLocale.mealsFailed);
+    }
+  }
+
   // local storage first, then the remote api
   Future<Either<T, String>> _cacheFirst<T>({
     required Future<T> Function() read,

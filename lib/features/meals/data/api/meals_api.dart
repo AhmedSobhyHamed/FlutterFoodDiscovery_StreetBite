@@ -11,6 +11,7 @@ class MealsApi {
   static const String detailsCache = 'meals/lookup';
   static const String selectedCategoryCache = 'meals/selected-category';
   static const String selectedCategoryId = 'current';
+  static const String mealsCachePrefix = 'meals/filter/';
 
-  static String mealsCache(String category) => 'meals/filter/$category';
+  static String mealsCache(String category) => '$mealsCachePrefix$category';
 }

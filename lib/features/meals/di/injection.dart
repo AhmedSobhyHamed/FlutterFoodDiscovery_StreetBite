@@ -6,6 +6,7 @@ import 'package:flutterfooddiscovery_streetbite/features/meals/data/datasources/
 import 'package:flutterfooddiscovery_streetbite/features/meals/data/datasources/meals_via_remote.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/data/repositories/meals_repository.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/repositories/meals_repository_interface.dart';
+import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/clear_home_cache_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_categories_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_hot_offers_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/meals/domain/usecases/get_meal_details_usecase.dart';
@@ -50,6 +51,9 @@ Future<void> setupMealsDependencies() async {
   getIt.registerFactory<SaveSelectedCategoryUsecase>(
     () => SaveSelectedCategoryUsecase(getIt<MealsRepositoryInterface>()),
   );
+  getIt.registerFactory<ClearHomeCacheUsecase>(
+    () => ClearHomeCacheUsecase(getIt<MealsRepositoryInterface>()),
+  );
 
   getIt.registerFactory<HomeCubit>(
     () => HomeCubit(
@@ -58,6 +62,7 @@ Future<void> setupMealsDependencies() async {
       getIt<GetHotOffersUsecase>(),
       getIt<GetSelectedCategoryUsecase>(),
       getIt<SaveSelectedCategoryUsecase>(),
+      getIt<ClearHomeCacheUsecase>(),
     ),
   );
   getIt.registerFactory<MealDetailsCubit>(

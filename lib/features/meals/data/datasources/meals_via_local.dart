@@ -8,7 +8,11 @@ import 'package:flutterfooddiscovery_streetbite/features/meals/l10n/meals_locale
 import 'package:shared_preferences/shared_preferences.dart';
 
 class MealsViaLocal extends LocalDataSource implements MealsLocalInterface {
-  MealsViaLocal(SharedPreferences preferences) : super(preferences);
+  MealsViaLocal(SharedPreferences preferences)
+    : _preferences = preferences,
+      super(preferences);
+
+  final SharedPreferences _preferences;
 
   @override
   Future<List<CategoryModel>> getCategories() {
@@ -84,6 +88,19 @@ class MealsViaLocal extends LocalDataSource implements MealsLocalInterface {
     );
     if (updated.isLeft()) return;
     await post(MealsApi.selectedCategoryCache, payload);
+  }
+
+  @override
+  Future<void> clearHome() async {
+    final keys = _preferences.getKeys().where(
+      (key) =>
+          key == MealsApi.categoriesCache ||
+          key == MealsApi.offersCache ||
+          key.startsWith(MealsApi.mealsCachePrefix),
+    );
+    for (final key in keys.toList()) {
+      await _preferences.remove(key);
+    }
   }
 
   @override

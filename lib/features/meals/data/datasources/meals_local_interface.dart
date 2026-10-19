@@ -21,4 +21,6 @@ abstract interface class MealsLocalInterface {
   Future<String?> getSelectedCategory();
 
   Future<void> saveSelectedCategory(String category);
+
+  Future<void> clearHome();
 }
