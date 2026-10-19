@@ -3,7 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_show_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_show_status.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/widgets/login/login_part.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/widgets/signup/signip_part.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/widgets/signup/signup_part.dart';
 
 class LoginPage extends StatelessWidget {
   const LoginPage({super.key});

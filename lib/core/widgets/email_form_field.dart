@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localization/flutter_localization.dart';
 import 'package:flutterfooddiscovery_streetbite/core/l10n/app_locale.dart';
+import 'package:flutterfooddiscovery_streetbite/core/themes/app_colors.dart';
 import 'package:flutterfooddiscovery_streetbite/core/widgets/app_field_decoration.dart';
 
 class EmailFormField extends StatelessWidget {
@@ -16,6 +17,7 @@ class EmailFormField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: const TextStyle(color: AppColors.black, fontSize: 16),
       controller: controller,
       validator: validator,
       keyboardType: TextInputType.emailAddress,

@@ -9,10 +9,14 @@ class PasswordFormField extends StatefulWidget {
     super.key,
     required this.controller,
     required this.validator,
+    this.hint,
+    this.textInputAction = TextInputAction.done,
   });
 
   final TextEditingController controller;
   final String? Function(String?)? validator;
+  final String? hint;
+  final TextInputAction textInputAction;
 
   @override
   State<PasswordFormField> createState() => _PasswordFormFieldState();
@@ -24,11 +28,14 @@ class _PasswordFormFieldState extends State<PasswordFormField> {
   @override
   Widget build(BuildContext context) {
     return TextFormField(
+      style: const TextStyle(color: AppColors.black, fontSize: 16),
       controller: widget.controller,
       validator: widget.validator,
       obscureText: _obscureText,
-      textInputAction: TextInputAction.done,
-      decoration: appFieldDecoration(AppLocale.passwordHint.getString(context)).copyWith(
+      textInputAction: widget.textInputAction,
+      decoration: appFieldDecoration(
+        widget.hint ?? AppLocale.passwordHint.getString(context),
+      ).copyWith(
         suffixIcon: IconButton(
           onPressed: () => setState(() {_obscureText = !_obscureText;}),
           icon: Icon(

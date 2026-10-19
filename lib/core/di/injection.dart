@@ -3,6 +3,7 @@ import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/data_sourc
 import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/local_data_source.dart';
 import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/remote_data_source.dart';
 import 'package:flutterfooddiscovery_streetbite/core/themes/app_theme.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/di/injection.dart' as auth_di;
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -13,6 +14,7 @@ Future<void> setupDependencies() async {
 
   await _setupDataSource();
   await _setupTheme();
+  auth_di.setupAuthDependencies();
 }
 
 // ===============================

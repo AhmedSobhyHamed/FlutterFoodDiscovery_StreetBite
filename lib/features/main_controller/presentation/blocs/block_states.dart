@@ -14,3 +14,7 @@ class MainControllerInitial extends MainControllerState {
 class MainControllerLogin extends MainControllerState {
   const MainControllerLogin();
 }
+
+class MainControllerHome extends MainControllerState {
+  const MainControllerHome();
+}

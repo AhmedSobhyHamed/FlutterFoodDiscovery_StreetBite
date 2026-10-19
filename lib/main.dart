@@ -2,10 +2,12 @@ import 'package:flutter/material.dart';
 import 'package:flutterfooddiscovery_streetbite/core/di/injection.dart';
 import 'package:flutterfooddiscovery_streetbite/features/main_controller/presentation/screens/main.dart';
 import 'package:flutter_localization/flutter_localization.dart';
+import 'package:firebase_core/firebase_core.dart';
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await FlutterLocalization.instance.ensureInitialized();
+  await Firebase.initializeApp();
   await setupDependencies();
   runApp(const MyApp());
 }

@@ -10,3 +10,11 @@ abstract class MainControllerEvent extends Equatable {
 class MainControllerSplashFinished extends MainControllerEvent {
   const MainControllerSplashFinished();
 }
+
+class MainControllerAuthenticated extends MainControllerEvent {
+  const MainControllerAuthenticated();
+}
+
+class MainControllerUnauthenticated extends MainControllerEvent {
+  const MainControllerUnauthenticated();
+}
