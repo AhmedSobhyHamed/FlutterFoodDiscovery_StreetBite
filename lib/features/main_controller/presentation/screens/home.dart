@@ -1,54 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localization/flutter_localization.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/di/injection.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_bloc.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_events.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/signout_cubit.dart';
-import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/signout_status.dart';
+import 'package:flutterfooddiscovery_streetbite/core/themes/app_colors.dart';
+import 'package:flutterfooddiscovery_streetbite/features/main_controller/l10n/main_controller_locale.dart';
+import 'package:flutterfooddiscovery_streetbite/features/meals/presentation/screens/home_page.dart';
 
-class HomeScreen extends StatelessWidget {
+class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
+
+  @override
+  State<HomeScreen> createState() => _HomeScreenState();
+}
+
+class _HomeScreenState extends State<HomeScreen> {
+  var _index = 0;
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text('Home'),
-        actions: [
-          BlocProvider(
-            create: (_) => getIt<SignOutCubit>(),
-            child: BlocConsumer<SignOutCubit, signoutStatus>(
-            listener: (context, state) {
-              if (state is signoutStatusSuccess) {
-                context.read<AuthBloc>().add(const becomeUnauthenticatedEvent());
-              }
-              if (state is signoutStatusError) {
-                ScaffoldMessenger.of(context).showSnackBar(
-                  SnackBar(content: Text(state.message.getString(context), style: TextStyle(color: Theme.of(context).colorScheme.error))),
-                );
-              }
-            },
-            builder: (context, state) {
-              if (state is signoutStatusLoading) {
-                return const Padding(
-                  padding: EdgeInsets.all(12),
-                  child: SizedBox(
-                    width: 24,
-                    height: 24,
-                    child: CircularProgressIndicator(strokeWidth: 2),
-                  ),
-                );
-              }
-              return IconButton(
-                onPressed: () => context.read<SignOutCubit>().signOut(),
-                icon: const Icon(Icons.logout),
-              );
-            },
-            ),
-          ),
+      backgroundColor: AppColors.white,
+      body: IndexedStack(
+        index: _index,
+        children: const [
+          HomePage(),
+          FavoritesScreen(),
+          CartScreen(),
         ],
       ),
-    );
-  }
-}
+      bottomNavigationBar: NavigationBar(
+        selectedIndex: _index,
+        backgroundColor: AppColors.white,
+        indicatorColor: AppColors.greenLight,
+        onDestinationSelected: (index) => setState(() => _index = index),
+        destinations: [
+          NavigationDestination(
+            icon: const Icon(Icons.home_outlined, color: AppColors.grayDark),
+            selectedIcon: const Icon(Icons.home, color: AppColors.green),
+            label: MainControllerLocale.home.getString(context),
+          ), // NavigationDestination
+          NavigationDestination(
+            icon: const Icon(Icons.favorite_outlined, color: AppColors.grayDark),
+            selectedIcon: const Icon(Icons.favorite, color: AppColors.green),
+            label: MainControllerLocale.favorites.getString(context),
+          ), // NavigationDestination
+          NavigationDestination(
+            icon: const Icon(Icons.shopping_cart_outlined, color: AppColors.grayDark),
+            selectedIcon: const Icon(Icons.shopping_cart, color: AppColors.green),
+            label: MainControllerLocale.cart.getString(context),
+          ), // NavigationDestination
+        ], // destinations
+      ), // NavigationBar
+    ); // Scaffold
+  } // build
+} // HomeScreen
+
+
+class FavoritesScreen extends StatelessWidget {
+  const FavoritesScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(
+      body: Center(child: Text('Favorites')),
+    ); // Scaffold
+  } // build
+} // FavoritesScreen
+
+class CartScreen extends StatelessWidget {
+  const CartScreen({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return const Scaffold(body: Center(child: Text('Cart')));
+  } // build
+} // CartScreen

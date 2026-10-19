@@ -1,79 +1,96 @@
 import 'package:flutterfooddiscovery_streetbite/core/data_source.dart/data_source_interface.dart';
+import 'package:flutterfooddiscovery_streetbite/core/exceptions/app_exception.dart';
 import 'package:dio/dio.dart';
 import 'package:dartz/dartz.dart';
 
 class RemoteDataSource implements DataSourceInterface {
   final Dio _dio;
 
+  Dio get dio => _dio;
+
   RemoteDataSource(this._dio);
 
   @override
-  Future<Either<List<Map<String, dynamic>>, String>> getList(String url, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+  Future<Either<List<Map<String, dynamic>>, AppException>> getList(String url, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.get(url, queryParameters: queryParams, options: Options(headers: headers));
       if (response.statusCode == 200 && response.data is List<dynamic>) {
         return Left(response.data.map((e) => e as Map<String, dynamic>).toList());
       } else {
-        return Right(_errorMessage(response));
+        return Right(GeneralException(message: _errorMessage(response)));
       }
     } catch (e) {
-      return Right('unknown error');
+      return Right(GeneralException(message: 'unknown error'));
     }
   }
 
   @override
-  Future<Either<Map<String, dynamic>, String>> getEntity(String url, String id, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+  Future<Either<Map<String, dynamic>, AppException>> getMap(String url, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+    try {
+      final response = await _dio.get(url, queryParameters: queryParams, options: Options(headers: headers));
+      if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
+        return Left(response.data);
+      } else {
+        return Right(GeneralException(message: _errorMessage(response)));
+      }
+    } catch (e) {
+      return Right(GeneralException(message: 'unknown error'));
+    }
+  }
+
+  @override
+  Future<Either<Map<String, dynamic>, AppException>> getEntity(String url, String id, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.get(url + '/' + id, queryParameters: queryParams, options: Options(headers: headers));
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Right(_errorMessage(response));
+        return Right(GeneralException(message: _errorMessage(response)));
       }
     } catch (e) {  
-      return Right('unknown error');
+      return Right(GeneralException(message: 'unknown error'));
     }
   }
 
   @override
-  Future<Either<Map<String, dynamic>, String>> post(String url, dynamic data, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+  Future<Either<Map<String, dynamic>, AppException>> post(String url, dynamic data, {Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.post(url, data: data, queryParameters: queryParams, options: Options(headers: headers));
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Right(_errorMessage(response));
+        return Right(GeneralException(message: _errorMessage(response)));
       }
     } catch (e) {
-      return Right('unknown error');
+      return Right(GeneralException(message: 'unknown error'));
     }
   }
 
   @override
-  Future<Either<Map<String, dynamic>, String>> put(String url, String id, dynamic data, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+  Future<Either<Map<String, dynamic>, AppException>> put(String url, String id, dynamic data, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.put(url + '/' + id, data: data, queryParameters: queryParams, options: Options(headers: headers));
       if (response.statusCode == 200 && response.data is Map<String, dynamic>) {
         return Left(response.data);
       } else {
-        return Right(_errorMessage(response));
+        return Right(GeneralException(message: _errorMessage(response)));
       }
     } catch (e) {
-      return Right('unknown error');
+      return Right(GeneralException(message: 'unknown error'));
     }
   }
 
   @override
-  Future<Either<bool, String>> delete(String url, String id, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
+  Future<Either<bool, AppException>> delete(String url, String id, {String key = 'id', Map<String, dynamic>? queryParams, Map<String, dynamic>? headers}) async {
     try {
       final response = await _dio.delete(url + '/' + id, queryParameters: queryParams, options: Options(headers: headers));
       if (response.statusCode == 200) {
         return Left(true);
       } else {
-        return Right(_errorMessage(response));
+        return Right(GeneralException(message: _errorMessage(response)));
       }
     } catch (e) {
-      return Right('unknown error');
+      return Right(GeneralException(message: 'unknown error'));
     }
   }
 

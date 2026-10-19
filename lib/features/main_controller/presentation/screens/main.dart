@@ -1,7 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/di/injection.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_bloc.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_events.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/auth_states.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/current_user_cubit.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/current_user_status.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/screens/login_page.dart';
 import 'package:flutterfooddiscovery_streetbite/features/main_controller/presentation/blocs/bloc_events.dart';
 import 'package:flutterfooddiscovery_streetbite/features/main_controller/presentation/blocs/block_states.dart';
@@ -21,12 +25,24 @@ class MainScreen extends StatelessWidget {
         BlocProvider(create: (_) => MainControllerBloc()),
         BlocProvider(create: (_) => SplashBloc()),
         BlocProvider(create: (_) => AuthBloc()),
+        BlocProvider(create: (_) => getIt<CurrentUserCubit>()),
       ],
       child: MultiBlocListener(
         listeners: [
           BlocListener<SplashBloc, SplashState>(
             listener: (context, state) {
               if (state is SplashFinished) {
+                context.read<CurrentUserCubit>().load();
+              }
+            },
+          ), // BlocListener
+          BlocListener<CurrentUserCubit, currentUserStatus>(
+            listener: (context, state) {
+              if (state is currentUserStatusFound) {
+                context.read<AuthBloc>().add(const becomeAthenticatedEvent());
+                return;
+              }
+              if (state is currentUserStatusMissing) {
                 context.read<MainControllerBloc>().add(
                   const MainControllerSplashFinished(),
                 );

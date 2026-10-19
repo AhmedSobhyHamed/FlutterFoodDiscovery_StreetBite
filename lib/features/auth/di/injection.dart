@@ -3,9 +3,11 @@ import 'package:flutterfooddiscovery_streetbite/features/auth/data/datasources/a
 import 'package:flutterfooddiscovery_streetbite/features/auth/data/models/user_model.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/data/repositories/auth_repository.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/repositories/auth_repository_interface.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/get_current_user_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/login_withemail_password_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/sign_out_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/domain/usecases/signup_minimal_info_usecase.dart';
+import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/current_user_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/login_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/signout_cubit.dart';
 import 'package:flutterfooddiscovery_streetbite/features/auth/presentation/blocs/signup_cubit.dart';
@@ -32,6 +34,9 @@ void setupAuthDependencies() {
   getIt.registerFactory<SignOutUsecase>(
     () => SignOutUsecase(getIt<AuthRepositoryInterface>()),
   );
+  getIt.registerFactory<GetCurrentUserUsecase>(
+    () => GetCurrentUserUsecase(getIt<AuthRepositoryInterface>()),
+  );
 
   getIt.registerFactory<LoginCubit>(
     () => LoginCubit(getIt<LoginWithEmailPasswordUsecase>()),
@@ -41,5 +46,8 @@ void setupAuthDependencies() {
   );
   getIt.registerFactory<SignOutCubit>(
     () => SignOutCubit(getIt<SignOutUsecase>()),
+  );
+  getIt.registerFactory<CurrentUserCubit>(
+    () => CurrentUserCubit(getIt<GetCurrentUserUsecase>()),
   );
 }
