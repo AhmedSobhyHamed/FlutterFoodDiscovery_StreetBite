@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "project_id": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+    "storage_bucket": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx:android:xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx",
+        "android_client_info": {
+          "package_name": "ash.ahmed.flutterfooddiscovery_streetbite"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
