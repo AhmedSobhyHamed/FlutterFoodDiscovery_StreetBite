@@ -21,4 +21,6 @@ abstract interface class CartRepositoryInterface {
   Future<Either<List<CartItemEntity>, String>> setQuantity(String id, int quantity);
 
   Future<Either<List<CartItemEntity>, String>> remove(String id);
+
+  Future<Either<List<CartItemEntity>, String>> clear();
 }

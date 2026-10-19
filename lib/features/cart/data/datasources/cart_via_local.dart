@@ -50,6 +50,14 @@ class CartViaLocal extends LocalDataSource implements CartLocalInterface {
     _throwIfFailed(stored);
   }
 
+  @override
+  Future<void> clear() async {
+    final items = await getItems();
+    for (final item in items) {
+      await remove(item.id);
+    }
+  }
+
   void _throwIfFailed<T>(Either<T, AppException> stored) {
     stored.fold((_) {}, (error) {
       throw error;

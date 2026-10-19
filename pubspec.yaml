@@ -44,6 +44,9 @@ dependencies:
   dartz: ^0.10.1
   dio: ^5.11.1
   firebase_auth: ^7.0.0
+  cloud_firestore: ^7.0.0
+  image_picker: ^1.2.4
+  local_auth: ^3.0.2
 
 dev_dependencies:
   flutter_test:

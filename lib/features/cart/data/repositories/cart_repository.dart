@@ -70,6 +70,15 @@ class CartRepository implements CartRepositoryInterface {
     }, CartLocale.saveFailed);
   }
 
+  @override
+  Future<Either<List<CartItemEntity>, String>> clear() {
+    return _guard(() async {
+      await _local.clear();
+      final items = await _local.getItems();
+      return items.cast<CartItemEntity>();
+    }, CartLocale.saveFailed);
+  }
+
   Future<Either<List<CartItemEntity>, String>> _guard(
     Future<List<CartItemEntity>> Function() action,
     String fallback,

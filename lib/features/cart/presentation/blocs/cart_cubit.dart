@@ -5,17 +5,19 @@ import 'package:flutterfooddiscovery_streetbite/features/cart/domain/entities/ca
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/add_cart_item_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/get_cart_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/remove_cart_item_usecase.dart';
+import 'package:flutterfooddiscovery_streetbite/features/order/domain/usecases/place_order_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/set_cart_quantity_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/presentation/blocs/cart_status.dart';
 
 class CartCubit extends Cubit<cartStatus> {
-  CartCubit(this._getCart, this._addItem, this._setQuantity, this._removeItem)
+  CartCubit(this._getCart, this._addItem, this._setQuantity, this._removeItem, this._placeOrder)
     : super(const cartStatusIdle());
 
   final GetCartUsecase _getCart;
   final AddCartItemUsecase _addItem;
   final SetCartQuantityUsecase _setQuantity;
   final RemoveCartItemUsecase _removeItem;
+  final PlaceOrderUsecase _placeOrder;
   Future<void> _pending = Future<void>.value();
 
   Future<void> load() {
@@ -66,6 +68,20 @@ class CartCubit extends Cubit<cartStatus> {
     return _run(() async {
       final result = await _removeItem.call(RemoveCartItemParams(id: id));
       _emit(result);
+    });
+  }
+
+  Future<void> order() {
+    return _run(() async {
+      final current = state;
+      if (current is! cartStatusLoaded || current.items.isEmpty || current.ordering) return;
+      emit(cartStatusLoaded(items: current.items, ordering: true));
+      final result = await _placeOrder.call(const PlaceOrderParams());
+      if (isClosed) return;
+      result.fold(
+        (items) => emit(cartStatusLoaded(items: items, placed: true)),
+        (error) => emit(cartStatusLoaded(items: current.items, message: error.message)),
+      );
     });
   }
 

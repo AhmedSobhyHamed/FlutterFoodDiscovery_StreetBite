@@ -7,6 +7,7 @@ import 'package:flutterfooddiscovery_streetbite/features/auth/di/injection.dart'
 import 'package:flutterfooddiscovery_streetbite/features/cart/di/injection.dart' as cart_di;
 import 'package:flutterfooddiscovery_streetbite/features/fav/di/injection.dart' as fav_di;
 import 'package:flutterfooddiscovery_streetbite/features/meals/di/injection.dart' as meals_di;
+import 'package:flutterfooddiscovery_streetbite/features/order/di/injection.dart' as order_di;
 import 'package:get_it/get_it.dart';
 import 'package:dio/dio.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -20,6 +21,7 @@ Future<void> setupDependencies() async {
   auth_di.setupAuthDependencies();
   await meals_di.setupMealsDependencies();
   await cart_di.setupCartDependencies();
+  order_di.setupOrderDependencies();
   await fav_di.setupFavDependencies();
 }
 

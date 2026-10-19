@@ -13,4 +13,6 @@ abstract interface class CartLocalInterface {
   Future<void> setQuantity(String id, int quantity);
 
   Future<void> remove(String id);
+
+  Future<void> clear();
 }

@@ -26,11 +26,18 @@ class cartStatusError extends cartStatus {
 }
 
 class cartStatusLoaded extends cartStatus {
-  const cartStatusLoaded({required this.items, this.message});
+  const cartStatusLoaded({
+    required this.items,
+    this.message,
+    this.ordering = false,
+    this.placed = false,
+  });
 
   final List<CartItemEntity> items;
   final String? message;
+  final bool ordering;
+  final bool placed;
 
   @override
-  List<Object?> get props => [items, message];
+  List<Object?> get props => [items, message, ordering, placed];
 }

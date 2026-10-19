@@ -7,6 +7,7 @@ import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/ge
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/remove_cart_item_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/domain/usecases/set_cart_quantity_usecase.dart';
 import 'package:flutterfooddiscovery_streetbite/features/cart/presentation/blocs/cart_cubit.dart';
+import 'package:flutterfooddiscovery_streetbite/features/order/domain/usecases/place_order_usecase.dart';
 import 'package:get_it/get_it.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -38,6 +39,7 @@ Future<void> setupCartDependencies() async {
       getIt<AddCartItemUsecase>(),
       getIt<SetCartQuantityUsecase>(),
       getIt<RemoveCartItemUsecase>(),
+      getIt<PlaceOrderUsecase>(),
     ),
   );
 }
