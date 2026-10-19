@@ -120,6 +120,36 @@ Home, cart, and favorites work where the device can store data and reach TheMeal
 
 ---
 
+## Build a release
+
+`INTERNET` is declared in `android/app/src/main/AndroidManifest.xml`, which is the manifest the release build uses. Release shrinking is off so the release APK starts the same way as `flutter run`.
+
+```bash
+flutter build apk --release
+```
+
+or
+
+```bash
+podman exec -it flutter_dev sh -c "cd apps/FlutterFoodDiscovery_StreetBite; flutter build apk --release"
+```
+
+The file is `build/app/outputs/flutter-apk/app-release.apk`. Install it on a connected phone:
+
+```bash
+adb install -r build/app/outputs/flutter-apk/app-release.apk
+```
+
+Upload that APK to Firebase App Distribution. `xxxx` is the Android app id from Project settings → Your apps.
+
+```bash
+firebase appdistribution:distribute build/app/outputs/flutter-apk/app-release.apk --app xxxx --groups testers --release-notes "StreetBite release"
+```
+
+The uploaded release is on Firebase App Distribution: [StreetBite 1.0.0](https://appdistribution.firebase.google.com/testerapps/1:419627227242:android:d2bffa41321ae298aad213/releases/7bip9rmp99pl0?utm_source=firebase-console). Sign in with the tester Google account, then install from that page.
+
+---
+
 ## Tech stack
 
 | Layer | Technology |
@@ -181,10 +211,11 @@ lib/
 ## Useful commands
 
 ```bash
-flutter pub get          # install dependencies
-flutter run              # run on a connected device
-flutter test             # run tests
-flutter analyze          # static analysis
+flutter pub get              # install dependencies
+flutter run                  # run on a connected device
+flutter build apk --release  # Android release APK
+flutter test                 # run tests
+flutter analyze              # static analysis
 ```
 
 ---
